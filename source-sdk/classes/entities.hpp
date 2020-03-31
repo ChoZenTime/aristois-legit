@@ -179,8 +179,7 @@ public:
 		using original_fn = bool(__thiscall*)(entity_t*);
 		return (*(original_fn**)this)[166](this);
 	}
-	vec3_t get_absolute_origin() {
-
+	
 	bool setup_bones(matrix_t* out, int max_bones, int mask, float time) {
 		if (!this) {
 			return false;
