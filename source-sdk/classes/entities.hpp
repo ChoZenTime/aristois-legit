@@ -173,12 +173,13 @@ public:
 	}
 	bool is_player() {
 		using original_fn = bool(__thiscall*)(entity_t*);
-		return (*(original_fn**)this)[155](this);
+		return (*(original_fn**)this)[156](this);
 	}
 	bool is_weapon() {
 		using original_fn = bool(__thiscall*)(entity_t*);
-		return (*(original_fn**)this)[163](this);
+		return (*(original_fn**)this)[166](this);
 	}
+	
 	bool setup_bones(matrix_t* out, int max_bones, int mask, float time) {
 		if (!this) {
 			return false;
@@ -287,22 +288,22 @@ public:
 
 	float get_innacuracy() {
 		using original_fn = float(__thiscall*)(void*);
-		return (*(original_fn**)this)[476](this);
+		return (*(original_fn**)this)[482](this);
 	}
 
 	float get_spread() {
 		using original_fn = float(__thiscall*)(void*);
-		return (*(original_fn**)this)[446](this);
+		return (*(original_fn**)this)[452](this);
 	}
 
 	void update_accuracy_penalty() {
 		using original_fn = void(__thiscall*)(void*);
-		(*(original_fn**)this)[477](this);
+		(*(original_fn**)this)[483](this);
 	}
 
 	weapon_info_t* get_weapon_data() {
 		using original_fn = weapon_info_t * (__thiscall*)(void*);
-		return (*(original_fn**)this)[454](this); //skinchanger crash
+		return (*(original_fn**)this)[460](this); //skinchanger crash
 	}
 };
 
@@ -458,7 +459,7 @@ public:
 
 	void update_client_side_animations() {
 		using original_fn = void(__thiscall*)(void*);
-		(*(original_fn**)this)[221](this);
+		(*(original_fn**)this)[222](this);
 	}
 
 	vec3_t & abs_origin() {
