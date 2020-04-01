@@ -272,29 +272,20 @@ void __stdcall hooks::scene_end() noexcept {
 extern LRESULT ImGui_ImplDX9_WndProcHandler(HWND hwnd, UINT message, WPARAM wparam, LPARAM lparam);
 
 LRESULT __stdcall hooks::wndproc(HWND hwnd, UINT message, WPARAM wparam, LPARAM lparam) noexcept {
-	static bool pressed = false;
-
-	if (!pressed && GetAsyncKeyState(VK_INSERT)) {
-		pressed = true;
+	LRESULT __stdcall hooks::wndproc(HWND hwnd, UINT message, WPARAM wparam, LPARAM lparam) noexcept {
+	if (message == WM_KEYUP) {
+		switch (wparam) {
+			case VK_INSERT:
+				menu.opened = !menu.opened;
+				interfaces::inputsystem->enable_input(!menu.opened);
+				break;
+		}
 	}
-	else if (pressed && !GetAsyncKeyState(VK_INSERT)) {
-		pressed = false;
-
-		menu.opened = !menu.opened;
-	}
-
-	if (menu.opened) {
-		interfaces::inputsystem->enable_input(false);
-
-	}
-	else if (!menu.opened) {
-		interfaces::inputsystem->enable_input(true);
-	}
-
 	if (menu.opened && ImGui_ImplDX9_WndProcHandler(hwnd, message, wparam, lparam))
 		return true;
-
 	return CallWindowProcW(wndproc_original, hwnd, message, wparam, lparam);
+}
+
 }
 
 void __stdcall hooks::lock_cursor() noexcept {
