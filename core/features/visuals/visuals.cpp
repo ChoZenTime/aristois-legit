@@ -62,7 +62,7 @@ void c_visuals::run() noexcept {
 	for (int i = 0; i < interfaces::entity_list->get_highest_index(); i++) {
 		auto entity = reinterpret_cast<player_t*>(interfaces::entity_list->get_client_entity(i));
 
-		if (entity && entity != local_player) {
+		if (entity && entity->dormant() && entity != local_player) {
 			auto client_class = entity->client_class();
 			auto model_name = interfaces::model_info->get_model_name(entity->model());
 
