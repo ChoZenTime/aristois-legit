@@ -62,7 +62,7 @@ void c_visuals::run() noexcept {
 	for (int i = 0; i < interfaces::entity_list->get_highest_index(); i++) {
 		auto entity = reinterpret_cast<player_t*>(interfaces::entity_list->get_client_entity(i));
 
-		if (entity && entity != local_player) {
+		if (entity && entity->dormant() && entity != local_player) {
 			auto client_class = entity->client_class();
 			auto model_name = interfaces::model_info->get_model_name(entity->model());
 
@@ -119,15 +119,36 @@ void c_visuals::player_rendering(player_t* entity) noexcept {
 	if (!get_playerbox(entity, bbox))
 		return;
 
-	if (config_system.item.player_box) {
-		auto red = config_system.item.clr_box[0] * 255;
-		auto green = config_system.item.clr_box[1] * 255;
-		auto blue = config_system.item.clr_box[2] * 255;
+	auto red = config_system.item.clr_box[0] * 255;
+	auto green = config_system.item.clr_box[1] * 255;
+	auto blue = config_system.item.clr_box[2] * 255;
 
+	switch (config_system.item.player_box) {
+	case 0: 
+	break;
+		/*
+		* NORMAL 2D BOX
+		*/
+	case 1: 
 		render.draw_outline(bbox.x - 1, bbox.y - 1, bbox.w + 2, bbox.h + 2, color(0, 0, 0, 255 + alpha[entity->index()]));
 		render.draw_rect(bbox.x, bbox.y, bbox.w, bbox.h, color(red, green, blue, alpha[entity->index()]));
 		render.draw_outline(bbox.x + 1, bbox.y + 1, bbox.w - 2, bbox.h - 2, color(0, 0, 0, 255 + alpha[entity->index()]));
+		break;
+		/*
+		* EDGE ESP Box 
+		*/
+	case 2: 
+		render.draw_corner_box(bbox.x - 1, bbox.y - 1, bbox.w + 2, bbox.h + 2, color(0, 0, 0, 255 + alpha[entity->index()]));
+		render.draw_corner_box(bbox.x, bbox.y, bbox.w, bbox.h, color(red, green, blue, 255 + alpha[entity->index()]));
+		render.draw_corner_box(bbox.x + 1, bbox.y + 1, bbox.w - 2, bbox.h - 2, color(0, 0, 0, 255 + alpha[entity->index()]));
+		break;
 	}
+ 
+
+ 
+
+
+
 	if (config_system.item.player_health) {
 		box temp(bbox.x - 5, bbox.y + (bbox.h - bbox.h * (utilities::math::clamp_value<int>(entity->health(), 0, 100.f) / 100.f)), 1, bbox.h * (utilities::math::clamp_value<int>(entity->health(), 0, 100) / 100.f) - (entity->health() >= 100 ? 0 : -1));
 		box temp_bg(bbox.x - 5, bbox.y, 1, bbox.h);

@@ -1,4 +1,3 @@
-#pragma once
 #include "../../dependencies/common_includes.hpp"
 #include "../features/visuals/visuals.hpp"
 #include "../features/misc/movement.hpp"
@@ -100,12 +99,10 @@ void hooks::shutdown() noexcept {
 float __stdcall hooks::viewmodel_fov() noexcept {
 	auto local_player = reinterpret_cast<player_t*>(interfaces::entity_list->get_client_entity(interfaces::engine->get_local_player()));
 
-	if (local_player && local_player->is_alive()) {
+	if (local_player && local_player->is_alive()) 
 		return 68.f + config_system.item.viewmodel_fov;
-	}
-	else {
+	else
 		return 68.f;
-	}
 }
 
 void __stdcall hooks::draw_set_color(int r, int g, int b, int a) noexcept {
@@ -274,29 +271,17 @@ void __stdcall hooks::scene_end() noexcept {
 extern LRESULT ImGui_ImplDX9_WndProcHandler(HWND hwnd, UINT message, WPARAM wparam, LPARAM lparam);
 
 LRESULT __stdcall hooks::wndproc(HWND hwnd, UINT message, WPARAM wparam, LPARAM lparam) noexcept {
-	static bool pressed = false;
-
-	if (!pressed && GetAsyncKeyState(VK_INSERT)) {
-		pressed = true;
+	if (message == WM_KEYUP) {
+		switch (wparam) {
+			case VK_INSERT:
+				menu.opened = !menu.opened;
+				interfaces::inputsystem->enable_input(!menu.opened);
+				break;
+		}
 	}
-	else if (pressed && !GetAsyncKeyState(VK_INSERT)) {
-		pressed = false;
-
-		menu.opened = !menu.opened;
-	}
-
-	if (menu.opened) {
-		interfaces::inputsystem->enable_input(false);
-
-	}
-	else if (!menu.opened) {
-		interfaces::inputsystem->enable_input(true);
-	}
-
 	if (menu.opened && ImGui_ImplDX9_WndProcHandler(hwnd, message, wparam, lparam))
 		return true;
-
-	return CallWindowProcA(wndproc_original, hwnd, message, wparam, lparam);
+	return CallWindowProcW(wndproc_original, hwnd, message, wparam, lparam);
 }
 
 void __stdcall hooks::lock_cursor() noexcept {

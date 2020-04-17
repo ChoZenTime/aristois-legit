@@ -28,7 +28,7 @@ public:
 		name_font = interfaces::surface->font_create();
 
 		interfaces::surface->set_font_glyph(watermark_font, "Tahoma", 12, 500, 0, 0, font_flags::fontflag_dropshadow);
-		interfaces::surface->set_font_glyph(name_font, "Verdana", 12, 500, 0, 0, font_flags::fontflag_antialias | font_flags::fontflag_dropshadow);
+		interfaces::surface->set_font_glyph(name_font, "Verdana Bold", 12, 500, 0, 0, font_flags::fontflag_antialias | font_flags::fontflag_dropshadow);
 	}
 	void draw_line(int x1, int y1, int x2, int y2, color colour) {
 		interfaces::surface->set_drawing_color(colour.r, colour.g, colour.b, colour.a);
@@ -67,6 +67,17 @@ public:
 	void draw_outline(int x, int y, int w, int h, color colour) {
 		interfaces::surface->set_drawing_color(colour.r, colour.g, colour.b, colour.a);
 		interfaces::surface->draw_outlined_rect(x, y, w, h);
+	}
+	void draw_corner_box(int x, int y, int w, int h, color colour) {
+		interfaces::surface->set_drawing_color(colour.r, colour.g, colour.b, colour.a);
+		interfaces::surface->draw_line(x, y, x, y + (h / 5));
+		interfaces::surface->draw_line(x, y, x + (w / 5), y);
+		interfaces::surface->draw_line(x + w, y, x + w - (w / 5), y);
+		interfaces::surface->draw_line(x + w, y, x + w, y + (h / 5));
+		interfaces::surface->draw_line(x, y + h, x + (w / 5), y + h);
+		interfaces::surface->draw_line(x, y + h, x, y + h - (h / 5));
+		interfaces::surface->draw_line(x + w, y + h, x + w - (w / 5), y + h);
+		interfaces::surface->draw_line(x + w, y + h, x + w, y + h - (h / 5)); 
 	}
 	void draw_textured_polygon(int n, vertex_t* vertice, color col) {
 		static int texture_id = interfaces::surface->create_new_texture_id(true);

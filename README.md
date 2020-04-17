@@ -19,6 +19,11 @@ Press `INSERT` key.
 ### How can I unload the cheat?
 Press `END` key.
 
+### Known scam/pasted p2c projects (don't use)
+[purves](https://i.imgur.com/wqslXxQ.png)
+[pantsu](https://user-images.githubusercontent.com/51787675/63182599-27a3c500-c07d-11e9-9daa-3ba10bc35902.png)
+[x124](https://x124cheats.me/index.php)
+
 ## Media
 ![image](https://i.imgur.com/v6PVR1g.png)
 ![image](https://i.imgur.com/ehQE2vj.png)
